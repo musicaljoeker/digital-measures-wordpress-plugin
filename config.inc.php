@@ -1,11 +1,11 @@
 <?php
-  $dm_configs = array
+$dm_configs = array
+(
+  'default' => array
   (
-    'default' => array
-    (
-      'username' => 'USERNAME',
-      'password' => 'PASSWORD',
-      'key' => 'University'
+    'username' => 'uwosh/fac_reports',
+    'password' => 'UO$72943',
+    'key' => 'Business'
     )
   );
-?>
+  ?>

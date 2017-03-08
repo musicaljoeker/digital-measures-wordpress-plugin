@@ -4,7 +4,7 @@ This plugin allows higher educational institutions who use Digital Measures' Act
 Then use that to populate faculty publication citations, educational acheivements (degrees), and presentation citations, in MLA and APA citation standards using shortcodes.
 
 ## License
-General Public License version 2. 
+General Public License version 2.
 
 ## Setup
 
@@ -27,6 +27,18 @@ Then edit that file to reflect your Digital Measures' Web Services Account crede
 </pre></code>
 
 Enable the plugin in the plugin page of the admin section.
+
+
+## Shortcode for Directory
+
+<code>[digitalmeasures type="directory"]</code>
+
+ - *type* should be "directory" to create a directory.
+
+## Shortcode for Departments
+<code>[digitalmeasures type="departments"]</code>
+
+ - *type* should be "departments" to create a list of departments.
 
 ## Shortcode for Publications
 
@@ -99,3 +111,42 @@ Enable the plugin in the plugin page of the admin section.
  - *username* should be the username in Digital Measures for the faculty member.
  - *type* should be "grants" to show grants.
  - *limit* is optional. The default is "0" which lists all grants, otherwise this is the maximum number of grants to list.
+
+##  Shortcode for Picture
+
+ <code>[digitalmeasures type="picture" username="epanther"]</code>
+
+  - *username* should be the username in Digital Measures for the faculty member.
+  - *type* should be "picture" to show picture.
+
+##  Shortcode for Contact
+
+   <code>[digitalmeasures type="contact" username="epanther"]</code>
+
+    - *username* should be the username in Digital Measures for the faculty member.
+    - *type* should be "contact" to show contact information.
+
+##  Shortcode for Department
+
+   <code>[digitalmeasures type="department" username="epanther"]</code>
+
+      - *username* should be the username in Digital Measures for the faculty member.
+      - *type* should be "department" to show what department the member is in.
+
+##  Shortcode for Expertise
+
+   <code>[digitalmeasures type="expertise" username="epanther"]</code>
+      - *username* should be the username in Digital Measures for the faculty member.
+      - *type* should be "expertise" to show expertises.
+
+##  Shortcode for Proffesional Membership
+
+     <code>[digitalmeasures type="profMember" username="epanther"]</code>
+      - *username* should be the username in Digital Measures for the faculty member.
+      - *type* should be "profMember" to show Proffesional Memberships of the member.
+
+##  Shortcode for Department List
+
+     <code>[digitalmeasures type="departmentlist" department="epanther"]</code>
+      - *username* should be the department name in Digital Measures for Department.
+      - *type* should be "departmentlist" to show the members in the department.        

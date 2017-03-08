@@ -1,14 +1,14 @@
 <?php
 /**
- * @file grant.inc.php
- * Contains the grant class.
- **/
+* @file grant.inc.php
+* Contains the grant class.
+**/
 
 
 /**
- * @class grant
- * Grant object for digitial measures, represents a research grant, teaching grant or businesss contract.
- **/
+* @class grant
+* Grant object for digitial measures, represents a research grant, teaching grant or businesss contract.
+**/
 class grant
 {
   private $sponsor;
@@ -17,12 +17,12 @@ class grant
   private $investigators;
 
   /**
-   * Constructor for grant object.
-   * @param string $title The title of the grant.
-   * @param string $sponsor The sponsor org for the grant.
-   * @param string $type The type of grant or contract.
-   * @param array $investigators Who the grant or contract is awwarded to.
-   **/
+  * Constructor for grant object.
+  * @param string $title The title of the grant.
+  * @param string $sponsor The sponsor org for the grant.
+  * @param string $type The type of grant or contract.
+  * @param array $investigators Who the grant or contract is awwarded to.
+  **/
   public function __construct($title,$sponsor,$type,$investigators)
   {
     $this->title = trim($title);
@@ -33,9 +33,9 @@ class grant
 
 
   /**
-   * Display the grant.
-   * @return the HTML of the grant.
-   **/
+  * Display the grant.
+  * @return the HTML of the grant.
+  **/
   public function display()
   {
     $ret = '<div class="grant">';
