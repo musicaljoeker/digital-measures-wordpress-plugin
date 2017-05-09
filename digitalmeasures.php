@@ -414,16 +414,18 @@ function dm_settings_page()
             //clicking button will get variable from the form box
             $('#active-button').click(function(event){
               event.preventDefault();
-              // uses ajax to pass activate to ActiveMembers.inc.php
+              // uses ajax to pass activate to activemembers.inc.php
+              var path = '<?php echo plugins_url('activemembers.inc.php', __FILE__) ?>';
+              alert(path);
               jQuery.ajax({
-                url:path,
+                url: path,
                 type: 'POST',
                 success: function (data) {
                   console.log("got this: " + data);
                   alert(data)
                 },
-                error: function (){
-                  alert('Failed to enter data');
+                error: function (error){
+                  alert('Failed to enter data. Error: ' + JSON.stringify(error));
                   console.log("failed");
                 }
               });
