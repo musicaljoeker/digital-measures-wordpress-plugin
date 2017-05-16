@@ -58,30 +58,54 @@ if(!$good) {
   exit;
 }
 $xml = simplexml_import_dom($dom);
+// $xml->asXML('dm.xml');
 //makes an array of active Users
 global $wpdb;
 $prefix = $wpdb->prefix;
 $digital_measures_table = $prefix . "digital_measures";
 // checks if digital measures table already exists
-if($wpdb->get_var("SHOW TABLES LIKE '$digital_measures_table'")!=$digital_measures_table) {
+if($wpdb->get_var("SHOW TABLES LIKE '" . $digital_measures_table . "'")!=$digital_measures_table) {
   // Table doesn't exists, create one
   $charset_collate = $wpdb->get_charset_collate();
-  $sql = "CREATE TABLE $digital_measures_table (
-    id mediumint(9) NOT NULL AUTO_INCREMENT,
+  $sql = "CREATE TABLE " . $digital_measures_table . " (
+    id INT NOT NULL AUTO_INCREMENT,
     username varchar(15) NOT NULL,
-    first_name varchar(15),
-    middle_name varchar(15),
-    last_name varchar(15),
+    first_name varchar(30),
+    middle_name varchar(30),
+    last_name varchar(30),
+    email varchar(30),
+    office_phone varchar(30),
+    website varchar(100),
+    department varchar(50),
     UNIQUE KEY id (id)
-  ) $charset_collate;";
+  ) " . $charset_collate . ";";
   require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
   dbDelta( $sql );
+}else {
+  // clears all of the old data out of the DM table
+  $wpdb->delete( $digital_measures_table, array( 'ID'< 0 ));
 }
-// else
-// {
-// $wpdb->delete( $digital_measures_table, array( 'ID'< 0 )); // im not sure if this works but should delete all of the rows before repopulating them
-// }
-// find all of the active members
+
+// checks if digital measures expertise table already exists
+$digital_measures_expertise_table = $digital_measures_table . '_expertise';
+if($wpdb->get_var("SHOW TABLES LIKE '" . $digital_measures_expertise_table . "'")!=$digital_measures_expertise_table) {
+  // Table doesn't exists, create one
+  $charset_collate = $wpdb->get_charset_collate();
+  $sql = "CREATE TABLE " . $digital_measures_expertise_table . " (
+    id INT NOT NULL AUTO_INCREMENT,
+    expertise varchar(200),
+    employeeId INT,
+    UNIQUE KEY id (id),
+    FOREIGN KEY (employeeId) REFERENCES " . $digital_measures_table . " (id)
+  ) " . $charset_collate . ";";
+  require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
+  dbDelta( $sql );
+}else {
+  // clears all of the old data out of the DM expertise table
+  $wpdb->delete( $digital_measures_expertise_table, array( 'ID'< 0 ));
+}
+
+// Steps thru each active member
 foreach($xml->Record as $record){
   // seeing if the record is an active user
   $adminXML = $record->ADMIN[0]; // selecting the first admin element
@@ -100,6 +124,12 @@ foreach($xml->Record as $record){
     $middleName = $record->PCI->MNAME;
     $lastName = $record->PCI->LNAME;
 
+    // new values
+    $email = $record->PCI->EMAIL;
+    $office_phone = $record->PCI->OPHONE;
+    $website = $record->PCI->WEBSITE;
+    $department = $record->IndexEntry['entryKey'];
+
     // inserting into the WordPress Database
     $wpdb->insert(
       $digital_measures_table,
@@ -107,19 +137,55 @@ foreach($xml->Record as $record){
         'username' => $username,
         'first_name' => $firstName,
         'middle_name' => $middleName,
-        'last_name' => $lastName
+        'last_name' => $lastName,
+        'email' => $email,
+        'office_phone' => $office_phone,
+        'website' => $website,
+        'department' => $department
       ),
       array(
+        '%s',
+        '%s',
+        '%s',
+        '%s',
         '%s',
         '%s',
         '%s',
         '%s'
       )
     );
+
+    $employee = $wpdb->get_results(
+      "SELECT id FROM " . $digital_measures_table . " WHERE username='" . $username . "';"
+    );
+    $employeeId = $employee[0]->id; // getting the id of the user who was selected
+    // inserting each expertise into the database
+    $expertise = array();
+    // Steps thru each person's expertise
+    foreach($record->PCI->PCI_EXPERTISE as $PCIExpertise){
+      $expertise = $PCIExpertise->EXPERTISE;
+      // inserting the expertise into the expertise table
+      $wpdb->insert(
+        $digital_measures_expertise_table,
+        array(
+          'expertise' => $expertise,
+          'employeeId' => $employeeId
+        ),
+        array(
+          '%s',
+          '%s'
+        )
+      );
+    }
   }
 }
 
-echo "Active members data were updated successfully";
+// Alerting the user the data was sent successfully and taking them back to the
+// settings page.
+echo "<script>
+             alert('Digital Measures data refreshed successfully!');
+             window.history.go(-1);
+     </script>";
 
 
 ?>

@@ -99,15 +99,15 @@ define
       //gets members from the specified department
       try
       {
-        foreach($xml->Record as $entery)
+        foreach($xml->Record as $entry)
         {
           $a;
-          foreach($entery->IndexEntry as $index)
+          foreach($entry->IndexEntry as $index)
           {
-            if($index['entryKey'] ==   $this->department)
+            if($index['entryKey'] == $this->department)
             {
-              $a=$entery['username'];
-              $this->departmentlist[]= new departmentlist
+              $a=$entry['username'];
+              $this->departmentlist[] = new departmentlist
               (
                 $a,
                 $configs
@@ -120,11 +120,11 @@ define
       {
         echo $e->message;
       }
-      //  creates an array of active usernames
+      // // creates an array of active usernames
       $prefix= $wpdb->prefix;
       $digital_measures = $prefix . "digital_measures";
       $activemembers =$wpdb->get_results("SELECT * FROM $digital_measures ;", ARRAY_A);
-      //Collects Name and User Name from all Members
+      // //Collects Name and User Name from all Members
       try
       {
         foreach($activemembers as $mem)
@@ -140,23 +140,23 @@ define
 
       }
 
-      //   below if the code for looking into digital measures database and getting the users from that, it does not take being active into account
-      // try
-      // {
-      // foreach($xml->Record as $rec)
-      //       $user=$rec['username'];
-      //      foreach($rec->PCI as $pci)
-      //     {
-      //         $this->memberlist[]= new memberlist
-      //           (
-      //           $user,
-      //           $pci->FNAME,
-      //           $pci->LNAME,
-      //           $pci->MNAME
-      //           );
-      //       }
-      // }
-      // }
+      // below if the code for looking into digital measures database and getting the users from that, it does not take being active into account
+      try
+      {
+      foreach($xml->Record as $rec)
+            $user=$rec['username'];
+           foreach($rec->PCI as $pci)
+          {
+              $this->memberlist[]= new memberlist
+                (
+                $user,
+                $pci->FNAME,
+                $pci->LNAME,
+                $pci->MNAME
+                );
+            }
+      }
+      }
       catch(Exception $e)
       {
         echo $e->message;
@@ -164,9 +164,9 @@ define
       //find all of the unique departments
       try
       {
-        foreach($xml->Record as $entery)
+        foreach($xml->Record as $entry)
         {
-          foreach($entery->IndexEntry as $index)
+          foreach($entry->IndexEntry as $index)
           {
             if($index['indexKey']=="DEPARTMENT")
             {

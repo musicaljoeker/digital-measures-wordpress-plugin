@@ -339,6 +339,12 @@ function dm_settings_page()
   ?>
   <div class="wrap">
     <h2>Digital Measures Shortcode</h2>
+    <h3>Refresh Digital Measures Data</h3>
+    <form action="<?php echo plugins_url('activemembers.inc.php', __FILE__) ?>" method="POST">
+      Clicking the refresh data button refresh all of the latest staff members that are active from the College of Business Digital Measures database.
+      <?php submit_button('Refresh Data', 'primary', 'active-button' ); ?>
+    </form>
+    <hr/>
     <h3>Settings</h3>
     <form action="options.php" method="post">
       <?php settings_fields( 'dm-settings-group' ); ?>
@@ -391,7 +397,6 @@ function dm_settings_page()
             <p class="description">If set to "yes", this will limit publications or presentations listed to those where "show on faculty profile page" in Digital Measures is set to "yes" This setting can be overridden using the <code>profile_only</code> option on a shortcode.</p>
           </td>
         </tr>
-
         <tr>
           <th scope="row">Default Author Limit</th>
           <td>
@@ -405,38 +410,8 @@ function dm_settings_page()
               This setting can be overridden using the <code>authors</code> option on a shortcode.</p>
             </td>
           </tr>
-
-
         </table>
-        <script>
-        (function($) {
-          $(document).ready(function(){
-            //clicking button will get variable from the form box
-            $('#active-button').click(function(event){
-              event.preventDefault();
-              // uses ajax to pass activate to activemembers.inc.php
-              var path = '<?php echo plugins_url('activemembers.inc.php', __FILE__) ?>';
-              alert(path);
-              jQuery.ajax({
-                url: path,
-                type: 'POST',
-                success: function (data) {
-                  console.log("got this: " + data);
-                  alert(data)
-                },
-                error: function (error){
-                  alert('Failed to enter data. Error: ' + JSON.stringify(error));
-                  console.log("failed");
-                }
-              });
-            });
-          });
-        })(jQuery);
-        </script>
-
         <?php submit_button(); ?>
-        <!-- adds a button to refresh the active members list -->
-        <?php submit_button('Re-load Active Faculty', 'primary','active-button' ); ?>
       </form>
       <hr/>
       <h3>How to use the ShortCode</h3>
